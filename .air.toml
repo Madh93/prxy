@@ -1,0 +1,21 @@
+# Config file for [Air](https://github.com/cosmtrek/air) in TOML format
+# Based on https://www.arhea.net/posts/2023-08-25-golang-debugging-with-air-and-vscode/
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+cmd = "task build:debug"
+bin = "./bin/prxy-debug"
+full_bin = "dlv exec ./bin/prxy-debug --listen=127.0.0.1:2345 --headless=true --api-version=2 --accept-multiclient --continue --log --"
+include_ext = ["go"]
+exclude_dir = [".vscode", ".devcontainer", "bin", "tmp"]
+exclude_regex = ["_test.go"]
+exclude_unchanged = true
+
+[misc]
+clean_on_exit = true
+
+[screen]
+clear_on_rebuild = true
+keep_scroll = true

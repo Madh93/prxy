@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/go
+{
+  "name": "prxy",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/dasel-asdf:2": {},
+    "ghcr.io/devcontainers-extra/features/fzf:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "postCreateCommand": "(cut -d' ' -f1 .tool-versions | xargs -i asdf plugin add {}) && asdf install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "go.lintTool": "golangci-lint-v2",
+        "go.lintFlags": [
+          "--path-mode=abs",
+          "--fast-only"
+        ],
+        "go.formatTool": "custom",
+        "go.alternateTools": {
+          "customFormatter": "golangci-lint"
+        },
+        "go.formatFlags": [
+          "fmt",
+          "--stdin"
+        ]
+      },
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "tamasfe.even-better-toml",
+        "redhat.vscode-yaml",
+        "golang.go@prerelease" // TODO: https://github.com/golang/vscode-go/issues/3732#issuecomment-2805974456
+      ]
+    }
+  }
+}

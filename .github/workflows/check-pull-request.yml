@@ -1,0 +1,31 @@
+name: Check Pull Request
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Install dependencies
+        run: go get .
+
+      - name: Build
+        run: go build -v
+
+      - name: Test
+        run: go test ./...
+
+      - name: Linter
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1.6

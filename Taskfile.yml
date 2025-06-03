@@ -1,0 +1,76 @@
+version: "3"
+
+vars:
+  APP_NAME: prxy
+  APP_VERSION:
+    sh: git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0"
+  COMMIT_HASH:
+    sh: git rev-parse HEAD
+  LD_FLAG_VERSION: "-X github.com/Madh93/{{.APP_NAME}}/internal/version.appVersion={{.APP_VERSION}}"
+  LD_FLAG_COMMIT: "-X github.com/Madh93/{{.APP_NAME}}/internal/version.commitHash={{.COMMIT_HASH}}"
+
+env:
+  GCO_ENABLED: 0
+
+tasks:
+  default:
+    desc: "Build and run"
+    cmds:
+      - task update-dependencies
+      - task install
+      - task run
+
+  clean:
+    desc: "Clean build artifacts"
+    cmds:
+      - go clean
+      - rm -rf bin
+
+  install:
+    desc: "Install the app"
+    cmds:
+      - go install -trimpath -ldflags "-s -w {{.LD_FLAG_VERSION}} {{.LD_FLAG_COMMIT}}"
+
+  run:
+    desc: "Run the app"
+    cmds:
+      - $GOPATH/bin/{{.APP_NAME}}
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - go test ./...
+
+  lint:
+    desc: "Run linters"
+    cmds:
+      - golangci-lint run
+
+  update-dependencies:
+    desc: "Update dependencies"
+    cmds:
+      - go get -u all && go mod tidy
+
+  bump:
+    desc: "Bump version"
+    cmds:
+      - git tag "$(svu next)"
+
+  #############
+  ### BUILD ###
+  #############
+
+  build:
+    desc: "Build the app"
+    cmds:
+      - go build -trimpath -ldflags -s -w "{{.LD_FLAG_VERSION}} {{.LD_FLAG_COMMIT}}" -o bin/{{.APP_NAME}}
+
+  build:debug:
+    desc: "Build the app for debug mode"
+    cmds:
+      - go build -ldflags "{{.LD_FLAG_VERSION}} {{.LD_FLAG_COMMIT}}" -gcflags=all="-N -l" -o bin/{{.APP_NAME}}-debug
+
+  build:docker:
+    desc: "Build the app docker image"
+    cmds:
+      - docker build -t {{.APP_NAME}}:latest --build-arg APP_VERSION={{.APP_VERSION}} --build-arg COMMIT_HASH={{.COMMIT_HASH}} .
