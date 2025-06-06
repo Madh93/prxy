@@ -18,7 +18,6 @@ tasks:
     cmds:
       - task update-dependencies
       - task install
-      - task run
 
   clean:
     desc: "Clean build artifacts"
@@ -63,7 +62,7 @@ tasks:
   build:
     desc: "Build the app"
     cmds:
-      - go build -trimpath -ldflags -s -w "{{.LD_FLAG_VERSION}} {{.LD_FLAG_COMMIT}}" -o bin/{{.APP_NAME}}
+      - go build -trimpath -ldflags "-s -w {{.LD_FLAG_VERSION}} {{.LD_FLAG_COMMIT}}" -o bin/{{.APP_NAME}}
 
   build:debug:
     desc: "Build the app for debug mode"
