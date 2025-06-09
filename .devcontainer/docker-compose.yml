@@ -5,3 +5,10 @@ services:
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
+
+  # Wireproxy instance for testing
+  # wireproxy:
+  #   image: ghcr.io/whyvl/wireproxy:9dad356beeb3abad48434d5ec9272ad17af5b957
+  #   container_name: devcontainer_wireproxy
+  #   volumes:
+  #     - ~/.wireproxy/prxy.conf:/etc/wireproxy/config:ro # Update your wireproxy config location
