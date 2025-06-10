@@ -1,0 +1,17 @@
+# This config is only used by .github/workflows/continuous-integration.yml
+# TODO: https://github.com/goreleaser/goreleaser/issues/3781
+
+builds:
+  - id: binary
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/Madh93/prxy/internal/version.appVersion=edge
+      - -X github.com/Madh93/prxy/internal/version.commitHash={{ .Env.COMMIT_HASH }}
+
+defaultPlatforms:
+  - linux/amd64
+  - linux/arm64

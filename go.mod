@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/knadh/koanf/providers/cliflagv3 v1.0.0
-	github.com/knadh/koanf/v2 v2.2.0
+	github.com/knadh/koanf/v2 v2.2.1
 	github.com/urfave/cli/v3 v3.3.3
 )
 

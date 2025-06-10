@@ -1,0 +1,115 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+
+# The lines below are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: binary
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/Madh93/prxy/internal/version.appVersion={{ .Version }}
+      - -X github.com/Madh93/prxy/internal/version.commitHash={{ .FullCommit }}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - "386"
+      - amd64
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm
+
+archives:
+  - formats: ["tar.gz"]
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
+
+kos:
+  - build: binary
+    repositories:
+      - ghcr.io/madh93/prxy
+      - madh93/prxy
+    tags:
+      - "{{ .Version }}"
+      - latest
+    labels:
+      org.opencontainers.image.authors: Madh93
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.description: Command-line reverse proxy for forwarding HTTP requests through an outbound proxy
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.source: "{{ .GitURL }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.title: "{{ .ProjectName }}"
+      org.opencontainers.image.url: "{{ .GitURL }}"
+      org.opencontainers.image.vendor: Madh93
+      org.opencontainers.image.version: "{{ .Version }}"
+    sbom: none
+    bare: true
+    preserve_import_paths: false
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - linux/arm/v7
+
+homebrew_casks:
+  - repository:
+      owner: Madh93
+      name: homebrew-tap
+    homepage: https://github.com/Madh93/prxy
+    description: Command-line reverse proxy for forwarding HTTP requests through an outbound proxy
+    license: MIT
+    commit_msg_template: "feat({{ .ProjectName }}): Brew cask update to version {{ .Tag }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  draft: true
+  github:
+    owner: Madh93
+    name: prxy
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).

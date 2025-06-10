@@ -32,3 +32,10 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.1.6
+
+      - uses: ko-build/setup-ko@v0.9
+
+      - name: Push
+        env:
+          COMMIT_HASH: ${{ github.sha }}
+        run: ko build --tags=edge --sbom=none --bare
