@@ -1,15 +1,16 @@
-<div align="center">
-  <img src="./docs/img/logo.png" alt="prxy logo" width="75%" height="75%>
-</div>
-
 <p align="center">
+  <img src="./docs/img/logo.png" alt="prxy logo" width="75%" height="75%>
+</p>
+<p align="center">
+  </br>
   <b>prxy</b> is a command-line reverse proxy written in <a href="https://go.dev/">Go</a> for forwarding HTTP requests through an outbound proxy, while automatically rewriting the <b>Host</b> header for you.
+</p>
 <hr>
 
 [![Latest release](https://img.shields.io/github/v/tag/Madh93/prxy?label=Release)](https://github.com/Madh93/prxy/releases)
 [![Go Version](https://img.shields.io/badge/Go-1.24-blue)](https://go.dev/doc/install)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Madh93/prxy)](https://goreportcard.com/report/github.com/Madh93/prxy)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Madh93/prxy/go.yml?branch=main)](https://github.com/Madh93/prxy/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Madh93/prxy/continuous-integration.yml?branch=main)](https://github.com/Madh93/prxy/actions)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Madh93/prxy.svg)](https://pkg.go.dev/github.com/Madh93/prxy)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen)](LICENSE)
 
