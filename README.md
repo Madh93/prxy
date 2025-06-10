@@ -55,6 +55,56 @@ Now, I can configure the Karakeep extension to point to `http://localhost:12345`
 
 ## Installation
 
+### GNU/Linux or macOS
+
+Via [Homebrew](https://brew.sh/):
+
+```shell
+brew install madh93/tap/prxy
+```
+
+### Docker
+
+#### Using `docker run`
+
+Use the `docker run` command to start `prxy`:
+
+```sh
+docker run --name prxy ghcr.io/madh93/prxy:latest --target https://myservice.domain.tld \
+     --proxy http://my-http-proxy \
+     --port 12345
+```
+
+#### Using `docker compose`
+
+Create a `docker-compose.yml` file with the following content:
+
+```yml
+services:
+  prxy:
+    image: ghcr.io/madh93/prxy:latest
+    restart: unless-stopped
+    environment:
+      - PRXY_TARGET=https://myservice.domain.tld
+      - PRXY_PROXY=http://my-http-proxy
+      - PRXY_PORT=12345
+```
+
+Use the `docker compose up` command to start `prxy`:
+
+```sh
+docker compose up
+```
+
+### From releases
+
+Download the latest binary from [the releases page](https://github.com/Madh93/prxy/releases):
+
+```sh
+curl -L https://github.com/Madh93/prxy/releases/latest/download/prxy_$(uname -s)_$(uname -m).tar.gz | tar -xz -O prxy > /usr/local/bin/prxy
+chmod +x /usr/local/bin/prxy
+```
+
 ### From source
 
 If you have Go installed:
