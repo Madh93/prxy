@@ -85,6 +85,7 @@ homebrew_casks:
   - repository:
       owner: Madh93
       name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     homepage: https://github.com/Madh93/prxy
     description: Command-line reverse proxy for forwarding HTTP requests through an outbound proxy
     license: MIT
